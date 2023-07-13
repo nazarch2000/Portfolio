@@ -1,0 +1,50 @@
+- name: Connect zabbix-agent
+  hosts: servers_all
+  become: true
+
+  tasks:
+    - name: Скопировать оригинальный файл конфигурации
+      copy:
+        src: /etc/zabbix/zabbix_agentd.conf
+        dest: /etc/zabbix/zabbix_agentd.conf.bak
+        remote_src: yes
+      notify:
+        - restart zabbix agent
+
+    - name: Найстройки server в zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^Server='
+        line: "Server={{ hostvars['zabbix'].ansible_host }}"
+      notify:
+        - restart zabbix agent
+
+    - name: Найстройки serveractive в zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^ServerActive='
+        line: "ServerActive={{ hostvars['zabbix'].ansible_host }}"
+      notify:
+        - restart zabbix agent
+
+    - name: Найстройки hostname в zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^HostName='
+        line: "#HostName="
+      notify:
+        - restart zabbix agent
+
+    - name: Найстройки hostmetada в zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^#HostMetadata='
+        line: "HostMetadata=linux.autoreg"
+      notify:
+        - restart zabbix agent
+
+  handlers:
+    - name: restart zabbix agent
+      service:
+        name: zabbix-agent
+        state: restarted
