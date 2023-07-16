@@ -9,9 +9,9 @@ terraform {
 
 provider "yandex" {
   zone      = "ru-central1-a"
-  cloud_id  = "***"
-  folder_id = "***"
-  token     = "***"
+  cloud_id  = "b1gjpa2s4k3vh5idi0a0"
+  folder_id = "b1grrtnnrkhmmjpth8io"
+  token     = "y0_AgAAAABP9YC5AATuwQAAAADWb85_P4rpHXRoTbGEpAVlTyuI7-xFIjc"
 }
  
 resource "yandex_compute_instance" "zabbix" {

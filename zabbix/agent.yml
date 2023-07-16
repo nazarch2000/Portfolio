@@ -30,8 +30,8 @@
     - name: Найстройки hostname в zabbix_agentd.conf
       lineinfile:
         path: /etc/zabbix/zabbix_agentd.conf
-        regexp: '^HostName='
-        line: "#HostName="
+        regexp: '^Hostname='
+        line: "#Hostname="
       notify:
         - restart zabbix agent
 
